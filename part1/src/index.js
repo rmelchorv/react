@@ -4,12 +4,12 @@ import ReactDOM from 'react-dom/client';
 const App = () => {
   const [ counter, setCounter ] = useState(0)
 
-  setTimeout(
-    () => setCounter(counter + 1),
-    1000
-  )
   return (
-    <div>{counter}</div>
+    <div>
+      <span>{counter} </span>
+      <button onClick={() => setCounter(counter + 1)}>plus</button>
+      <button onClick={() => setCounter(0)}>zero</button>
+    </div>
   )
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
