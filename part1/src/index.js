@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Display = ({ counter }) => {
-  return (
-    <>
-      <span>{counter} </span>
-    </>
-  )
-}
-const Button = ({ handleClick, text }) => {
-  return (
-    <button onClick={handleClick}>{text}</button>
-  )
-}
+const Display = ({ counter }) => <><span>{counter} </span></>
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>{text}</button>
+)
 const App = () => {
   const [ counter, setCounter ] = useState(0)
   const increaseBy1 = () => setCounter(counter + 1)
