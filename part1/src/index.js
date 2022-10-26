@@ -6,17 +6,16 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 )
 const App = () => {
-  const [left, setLeft] = useState(0)
-  const [right, setRight] = useState(0)
-  const increaseLeft = () => setLeft(left + 1)
-  const increaseRight = () => setRight(right + 1)
+  const [clicks, setClicks] = useState({ left: 0, right: 0 })
+  const increaseLeft = () => setClicks({ left: clicks.left + 1, right: clicks.right })
+  const increaseRight = () => setClicks({left: clicks.left, right: clicks.right + 1 })
 
   return (
     <div>
-      <Display counter={left} />
+      <Display counter={clicks.left} />
       <Button handleClick={increaseLeft} text="left" />
       <Button handleClick={increaseRight} text="right" />
-      <Display counter={right} />
+      <Display counter={clicks.right} />
     </div>
   )
 }
