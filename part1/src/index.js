@@ -1,33 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Hello = ({ name, age }) => {
-  const bornYear = () => new Date().getFullYear() - age
-
+const App = ({ counter}) => {
   return (
-    <div>
-      <p>
-        Hello {name}, you are {age} years old
-      </p>
-      <p>So you were probably born in {bornYear()}</p>
-    </div>
+    <div>{counter}</div>
   )
 }
-const App = () => {
-  const name = 'Peter'
-  const age = 10
+let counter = 1
 
-  return (
-    <div>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10} />
-      <Hello name={name} age={age} />
-    </div>
-  )
+const refresh = () => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(
+    <React.StrictMode>
+      <App counter={counter} />
+    </React.StrictMode>
+  );
 }
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+setInterval(() => {
+  refresh();
+  counter++;
+}, 1000);
