@@ -1,22 +1,20 @@
-import React from 'react';
+import React, { useState} from 'react';
 import ReactDOM from 'react-dom/client';
 
-const App = ({ counter}) => {
+const App = () => {
+  const [ counter, setCounter ] = useState(0)
+
+  setTimeout(
+    () => setCounter(counter + 1),
+    1000
+  )
   return (
     <div>{counter}</div>
   )
 }
-let counter = 1
-
-const refresh = () => {
-  const root = ReactDOM.createRoot(document.getElementById('root'));
-  root.render(
-    <React.StrictMode>
-      <App counter={counter} />
-    </React.StrictMode>
-  );
-}
-setInterval(() => {
-  refresh();
-  counter++;
-}, 1000);
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
