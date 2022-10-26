@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Display = ({ counter }) => <><span>{counter} </span></>
+const Display = ({ counter }) => <><span> {counter} </span></>
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 )
 const App = () => {
-  const [ counter, setCounter ] = useState(0)
-  const increaseBy1 = () => setCounter(counter + 1)
-  const decreaseBy1 = () => setCounter(counter - 1)
-  const set2Zero = () => setCounter(0)
+  const [left, setLeft] = useState(0)
+  const [right, setRight] = useState(0)
+  const increaseLeft = () => setLeft(left + 1)
+  const increaseRight = () => setRight(right + 1)
 
   return (
     <div>
-      <Display counter={counter} />
-      <Button handleClick={increaseBy1} text="plus" />
-      <Button handleClick={decreaseBy1} text="minus" />
-      <Button handleClick={set2Zero} text="zero" />
+      <Display counter={left} />
+      <Button handleClick={increaseLeft} text="left" />
+      <Button handleClick={increaseRight} text="right" />
+      <Display counter={right} />
     </div>
   )
 }
