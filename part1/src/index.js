@@ -7,8 +7,8 @@ const Button = ({ handleClick, text }) => (
 )
 const App = () => {
   const [clicks, setClicks] = useState({ left: 0, right: 0 })
-  const increaseLeft = () => setClicks({ left: clicks.left + 1, right: clicks.right })
-  const increaseRight = () => setClicks({left: clicks.left, right: clicks.right + 1 })
+  const increaseLeft = () => setClicks({ ...clicks, left: clicks.left + 1 })
+  const increaseRight = () => setClicks({...clicks, right: clicks.right + 1 })
 
   return (
     <div>
