@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom/client';
 
 const App = () => {
   const [ counter, setCounter ] = useState(0)
+  const increaseBy1 = () => setCounter(counter + 1)
+  const set2Zero = () => setCounter(0)
 
   return (
     <div>
       <span>{counter} </span>
-      <button onClick={() => setCounter(counter + 1)}>plus</button>
-      <button onClick={() => setCounter(0)}>zero</button>
+      <button onClick={increaseBy1}>plus</button>
+      <button onClick={set2Zero}>zero</button>
     </div>
   )
 }
