@@ -9,6 +9,9 @@ const App = () => {
       setValue(newValue)
     }
 
+  // No defina componentes adentro de otro componente
+  const Display = props => <div>{props.value}</div>
+
   return (
     <div>
       <Display value={value} />
