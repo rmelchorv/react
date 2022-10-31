@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Display = ({ value }) => <><span> {value} </span></>
+const Display = ({ title }) => <><h1> {title} </h1></>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const App = () => {
-  const [value, setValue] = useState(10)
-  const setToValue = (newValue) => () => {
-      setValue(newValue)
-    }
+  // save clicks of each button to its own state
+  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 })
+  const increaseGood = () => setFeedback({ ...feedback, good: feedback.good + 1 })
+  const increaseNeutral = () => setFeedback({ ...feedback, neutral: feedback.neutral + 1 })
+  const increaseBad = () => setFeedback({ ...feedback, bad: feedback.bad + 1 })
 
-  // No defina componentes adentro de otro componente
-  const Display = props => <div>{props.value}</div>
+  const setToFeedback = (value) => value
 
   return (
     <div>
-      <Display value={value} />
-      <Button handleClick={setToValue(1000)} text="thousand" />
-      <Button handleClick={setToValue(10)} text="reset" />
-      <Button handleClick={setToValue(value + 1)} text="increment" />
+      <Display title="give fedback" />
+      <Button handleClick={setToFeedback(increaseGood)} text="good"></Button>
+      <Button handleClick={setToFeedback(increaseNeutral)} text="neutral"></Button>
+      <Button handleClick={setToFeedback(increaseBad)} text="bad"></Button>
     </div>
   )
 }
