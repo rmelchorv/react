@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Display = ({ title }) => <><h1> {title} </h1></>
+const Title = ({ title }) => <><h1>{title}</h1></>
+const Statistic = ({ text, value }) => <div>{text}: {value}</div>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const App = () => {
   // save clicks of each button to its own state
@@ -14,10 +15,14 @@ const App = () => {
 
   return (
     <div>
-      <Display title="give fedback" />
+      <Title title="give fedback" />
       <Button handleClick={setToFeedback(increaseGood)} text="good"></Button>
       <Button handleClick={setToFeedback(increaseNeutral)} text="neutral"></Button>
       <Button handleClick={setToFeedback(increaseBad)} text="bad"></Button>
+      <Title title="statistics" />
+      <Statistic text="good" value={feedback.good} />
+      <Statistic text="neutral" value={feedback.neutral} />
+      <Statistic text="bad" value={feedback.bad} />
     </div>
   )
 }
