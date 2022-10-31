@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
-
+/*
 const Display = ({ counter }) => <><span> {counter} </span></>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const History = ({ allClics }) => {
@@ -13,20 +13,26 @@ const History = ({ allClics }) => {
     <><p>{allClics.join('-')}</p></>
   )
 }
+*/
 const App = () => {
-  const [clicks, setClicks] = useState({ left: 0, right: 0, all: [] })
-  const increaseLeft = () => setClicks({ ...clicks, left: clicks.left + 1, all: clicks.all.concat('L') })
-  const increaseRight = () => setClicks({...clicks, right:clicks.right + 1,all: clicks.all.concat('R') })
+  // estos estan bien
+  const [age, setAge] = useState(0)
+  const [name, setName] = useState('Juha Tauriainen')
 
-  return (
-    <div>
-      <Display counter={clicks.left} />
-      <Button handleClick={increaseLeft} text="left" />
-      <Button handleClick={increaseRight} text="right" />
-      <Display counter={clicks.right} />
-      <History allClics={clicks.all} />
-    </div>
-  )
+  if ( age > 10 ) {
+    // esto no funciona!
+    const [foobar, setFoobar] = useState(null)
+  }
+
+  for ( let i = 0; i < age; i++ ) {
+    // también esto no está bien
+    const [rightWay, setRightWay] = useState(false)
+  }
+
+  const notGood = () => {
+    // y esto también es ilegal
+    const [x, setX] = useState(-1000)
+  }
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
