@@ -15,24 +15,19 @@ const History = ({ allClics }) => {
 }
 */
 const App = () => {
-  // estos estan bien
-  const [age, setAge] = useState(0)
-  const [name, setName] = useState('Juha Tauriainen')
+  const [value, setValue] = useState(10)
 
-  if ( age > 10 ) {
-    // esto no funciona!
-    const [foobar, setFoobar] = useState(null)
+  const handleClick = () => {
+    console.log('clicked the button')
+    setValue(0)
   }
 
-  for ( let i = 0; i < age; i++ ) {
-    // también esto no está bien
-    const [rightWay, setRightWay] = useState(false)
-  }
-
-  const notGood = () => {
-    // y esto también es ilegal
-    const [x, setX] = useState(-1000)
-  }
+  return (
+    <div>
+      {value}
+      <button onClick={handleClick}>button</button>
+    </div>
+  )
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
