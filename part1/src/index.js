@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 const Display = ({ counter }) => <><span> {counter} </span></>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 /** COMENTARIO -1  */
+/** COMENTARIO -2  */
 const App = () => {
   const [clicks, setClicks] = useState({ left: 0, right: 0, all: [] })
   const increaseLeft = () => setClicks({ ...clicks, left: clicks.left + 1, all: clicks.all.concat('L') })
