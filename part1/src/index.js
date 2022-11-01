@@ -10,6 +10,21 @@ const App = () => {
   const increaseGood = () => setFeedback({ ...feedback, good: feedback.good + 1 })
   const increaseNeutral = () => setFeedback({ ...feedback, neutral: feedback.neutral + 1 })
   const increaseBad = () => setFeedback({ ...feedback, bad: feedback.bad + 1 })
+  const all = (feedback) => feedback.good + feedback.neutral + feedback.bad
+  const average = (feedback) => {
+    const _all = all(feedback)
+
+    if (_all !== 0)
+      return ((feedback.good - feedback.bad) / _all).toFixed(2) + " %"
+    return "0.00 %"
+  }
+  const positive = (feedback) => {
+    const _all = all(feedback)
+
+    if (_all !== 0)
+      return (feedback.good * 100.0 / _all).toFixed(2) + " %"
+    return "0.00 %"
+  }
 
   const setToFeedback = (value) => value
 
@@ -23,6 +38,9 @@ const App = () => {
       <Statistic text="good" value={feedback.good} />
       <Statistic text="neutral" value={feedback.neutral} />
       <Statistic text="bad" value={feedback.bad} />
+      <Statistic text="all" value={all(feedback)} />
+      <Statistic text="average" value={average(feedback)} />
+      <Statistic text="positive" value={positive(feedback)} />
     </div>
   )
 }
