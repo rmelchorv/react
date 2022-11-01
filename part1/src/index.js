@@ -13,7 +13,7 @@ const App = () => {
   const increaseBad = () => setFeedback({ ...feedback, bad: feedback.bad + 1 })
   // factory for event handlers
   const setToFeedback = (value) => value
-  // statistics
+  // statistic functions
   const all = (feedback) => feedback.good + feedback.neutral + feedback.bad
   const average = (feedback) => (all(feedback) === 0) ? "0.00 %" 
     : ((feedback.good - feedback.bad) / all(feedback)).toFixed(2) + " %"
