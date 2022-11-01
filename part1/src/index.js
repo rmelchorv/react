@@ -3,25 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 const Title = ({ title }) => <><h1>{title}</h1></>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
-const Statistics = ({ feedback }) => {
-  // statistics
-  const all = (feedback) => feedback.good + feedback.neutral + feedback.bad
-  const average = (feedback) => ((feedback.good - feedback.bad) / all(feedback)).toFixed(2) + " %"
-  const positive = (feedback) => (feedback.good * 100.0 / all(feedback)).toFixed(2) + " %"
-
-  if (all(feedback) === 0)
-    return "no feedback given"
-  return (
-    <>
-      <div>good: {feedback.good}</div>
-      <div>neutral: {feedback.neutral}</div>
-      <div>bad: {feedback.bad}</div>
-      <div>all: {all(feedback)}</div>
-      <div>average: {average(feedback)}</div>
-      <div>positive: {positive(feedback)}</div>
-    </>
-  )
-}
+const Statistic = ({ text, value }) => <div>{text}: {value}</div>
 const App = () => {
   // save clicks of each button to its own state
   // ... the state of the application should remain in the App root component
@@ -31,7 +13,12 @@ const App = () => {
   const increaseBad = () => setFeedback({ ...feedback, bad: feedback.bad + 1 })
   // factory for event handlers
   const setToFeedback = (value) => value
-
+  // statistics
+  const all = (feedback) => feedback.good + feedback.neutral + feedback.bad
+  const average = (feedback) => (all(feedback) === 0) ? "0.00 %" 
+    : ((feedback.good - feedback.bad) / all(feedback)).toFixed(2) + " %"
+  const positive = (feedback) => (all(feedback) === 0) ? "0.00 %"
+    : (feedback.good * 100.0 / all(feedback)).toFixed(2) + " %"
   return (
     <div>
       <Title title="give fedback" />
@@ -39,7 +26,12 @@ const App = () => {
       <Button handleClick={setToFeedback(increaseNeutral)} text="neutral"></Button>
       <Button handleClick={setToFeedback(increaseBad)} text="bad"></Button>
       <Title title="statistics" />
-      <Statistics feedback={feedback} />
+      <Statistic text="good" value={feedback.good} />
+      <Statistic text="neutral" value={feedback.neutral} />
+      <Statistic text="bad" value={feedback.bad} />
+      <Statistic text="all" value={all(feedback)} />
+      <Statistic text="average" value={average(feedback)} />
+      <Statistic text="positive" value={positive(feedback)} />
     </div>
   )
 }
