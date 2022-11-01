@@ -1,19 +1,27 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Quote = ({ quote }) => <div>{quote}</div>
+const Display = ({ text }) => <div>{text}</div>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const App = ({ anectodes }) => {
   // component state
-  const [selected, setSelected] = useState(0)
-  const setQuote = () => setSelected(getRandInt(0, anectodes.length))
+  const [quotes, setSelected] = useState({ selected: 0, votes: [] })
+  const setQuote = () => setSelected({ ...quotes, selected: getRandInt(0, anectodes.length) })
+  const voteQuote = () => {
+    const votes = quotes.votes.concat()
+
+    votes[quotes.selected] = (votes[quotes.selected] === undefined) ? 1 : votes[quotes.selected] + 1
+    setSelected({ ...quotes, votes: votes })
+  }
   // generates random number between min (included) and max (excluded):
   const getRandInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
   return (
     <div>
-      <Quote quote={anectodes[selected]} />
+      <Button handleClick={voteQuote} text="vote" />
       <Button handleClick={setQuote} text="next anecdote" />
+      <Display text={"has " + ((quotes.votes[quotes.selected] === undefined) ? "0" : quotes.votes[quotes.selected]) + " votes"} />
+      <Display text={anectodes[quotes.selected]} />
     </div>
   )
 }
