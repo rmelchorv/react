@@ -1,47 +1,34 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-const Title = ({ title }) => <><h1>{title}</h1></>
+const Quote = ({ quote }) => <div>{quote}</div>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
-const Statistic = ({ text, value }) => <><tr><td>{text}</td><td>{value}</td></tr></>
-const App = () => {
-  // save clicks of each button to its own state
-  // ... the state of the application should remain in the App root component
-  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 })
-  const increaseGood = () => setFeedback({ ...feedback, good: feedback.good + 1 })
-  const increaseNeutral = () => setFeedback({ ...feedback, neutral: feedback.neutral + 1 })
-  const increaseBad = () => setFeedback({ ...feedback, bad: feedback.bad + 1 })
-  // factory for event handlers
-  const setToFeedback = (value) => value
-  // statistic functions
-  const all = (feedback) => feedback.good + feedback.neutral + feedback.bad
-  const average = (feedback) => (all(feedback) === 0) ? "0.00 %" 
-    : ((feedback.good - feedback.bad) / all(feedback)).toFixed(2) + " %"
-  const positive = (feedback) => (all(feedback) === 0) ? "0.00 %"
-    : (feedback.good * 100.0 / all(feedback)).toFixed(2) + " %"
+const App = ({ anectodes }) => {
+  // component state
+  const [selected, setSelected] = useState(0)
+  const setQuote = () => setSelected(getRandInt(0, anectodes.length))
+  // generates random number between min (included) and max (excluded):
+  const getRandInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+
   return (
     <div>
-      <Title title="give fedback" />
-      <Button handleClick={setToFeedback(increaseGood)} text="good"></Button>
-      <Button handleClick={setToFeedback(increaseNeutral)} text="neutral"></Button>
-      <Button handleClick={setToFeedback(increaseBad)} text="bad"></Button>
-      <Title title="statistics" />
-      <table>
-        <tbody>
-          <Statistic text="good" value={feedback.good} />
-          <Statistic text="neutral" value={feedback.neutral} />
-          <Statistic text="bad" value={feedback.bad} />
-          <Statistic text="all" value={all(feedback)} />
-          <Statistic text="average" value={average(feedback)} />
-          <Statistic text="positive" value={positive(feedback)} />
-        </tbody>
-      </table>
+      <Quote quote={anectodes[selected]} />
+      <Button handleClick={setQuote} text="next anecdote" />
     </div>
   )
 }
+
+const anecdotes = [
+  'If it hurts, do it more often',
+  'Adding manpower to a late software project makes it later!',
+  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+  'Premature optimization is the root of all evil.',
+  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
+]
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <App anectodes={anecdotes} />
   </React.StrictMode>
 );
