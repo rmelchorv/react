@@ -6,7 +6,7 @@ const Display = ({ text }) => <div>{text}</div>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const App = ({ anectodes }) => {
   // component state
-  const [quotes, setSelected] = useState({ selected: 0, votes: Array(anecdotes.length).fill(0) })
+  const [quotes, setSelected] = useState({ selected: 0, votes: [] })
   const setQuote = () => setSelected({ ...quotes, selected: getRandInt(0, anectodes.length) })
   const voteQuote = () => {
     const votes = quotes.votes.concat()
