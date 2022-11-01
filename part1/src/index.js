@@ -6,30 +6,28 @@ const Display = ({ text }) => <div>{text}</div>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const App = ({ anectodes }) => {
   // component state
-  const [quotes, setSelected] = useState({ selected: 0, votes: [] })
+  const [quotes, setSelected] = useState({ selected: 0, votes: Array(anecdotes.length).fill(0) })
   const setQuote = () => setSelected({ ...quotes, selected: getRandInt(0, anectodes.length) })
   const voteQuote = () => {
-    const votes = quotes.votes.concat()
+    const votes = [...quotes.votes]
 
-    votes[quotes.selected] = (votes[quotes.selected] === undefined) ? 1 : votes[quotes.selected] + 1
+    votes[quotes.selected]++
     setSelected({ ...quotes, votes: votes })
   }
   // generates random number between min (included) and max (excluded):
   const getRandInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-  // get max votes
-  const getMax = () => {
-    console.log(quotes.votes.indexOf(Math.max.apply(null, quotes.votes)))
-  }
+  // get max votes index
+  const getMax = () => quotes.votes.indexOf(Math.max.apply(null, quotes.votes))
 
   return (
     <div>
       <Button handleClick={voteQuote} text="vote" />
       <Button handleClick={setQuote} text="next anecdote" />
       <Title text="Anecdote of the day" />
-      <Display text={"has " + ((quotes.votes[quotes.selected] === undefined) ? "0" : quotes.votes[quotes.selected]) + " votes"} />
+      <Display text={"has " + quotes.votes[quotes.selected] + " votes"} />
       <Display text={anectodes[quotes.selected]} />
       <Title text="Anecdote with most votes" />
-      <Display text={"has " + ((quotes.votes[getMax()] === undefined) ? "0" : quotes.votes[getMax()]) + " votes"} />
+      <Display text={"has " + quotes.votes[getMax()] + " votes"} />
       <Display text={anectodes[getMax()]} />
     </div>
   )
