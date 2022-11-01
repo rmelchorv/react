@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 const Title = ({ title }) => <><h1>{title}</h1></>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
-const Statistic = ({ text, value }) => <div>{text}: {value}</div>
+const Statistic = ({ text, value }) => <><tr><td>{text}</td><td>{value}</td></tr></>
 const App = () => {
   // save clicks of each button to its own state
   // ... the state of the application should remain in the App root component
@@ -26,12 +26,16 @@ const App = () => {
       <Button handleClick={setToFeedback(increaseNeutral)} text="neutral"></Button>
       <Button handleClick={setToFeedback(increaseBad)} text="bad"></Button>
       <Title title="statistics" />
-      <Statistic text="good" value={feedback.good} />
-      <Statistic text="neutral" value={feedback.neutral} />
-      <Statistic text="bad" value={feedback.bad} />
-      <Statistic text="all" value={all(feedback)} />
-      <Statistic text="average" value={average(feedback)} />
-      <Statistic text="positive" value={positive(feedback)} />
+      <table>
+        <tbody>
+          <Statistic text="good" value={feedback.good} />
+          <Statistic text="neutral" value={feedback.neutral} />
+          <Statistic text="bad" value={feedback.bad} />
+          <Statistic text="all" value={all(feedback)} />
+          <Statistic text="average" value={average(feedback)} />
+          <Statistic text="positive" value={positive(feedback)} />
+        </tbody>
+      </table>
     </div>
   )
 }
