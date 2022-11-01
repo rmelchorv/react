@@ -6,6 +6,7 @@ const Statistic = ({ text, value }) => <div>{text}: {value}</div>
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
 const App = () => {
   // save clicks of each button to its own state
+  // ... the state of the application should remain in the App root component
   const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 })
   const increaseGood = () => setFeedback({ ...feedback, good: feedback.good + 1 })
   const increaseNeutral = () => setFeedback({ ...feedback, neutral: feedback.neutral + 1 })
