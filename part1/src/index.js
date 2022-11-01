@@ -15,15 +15,15 @@ const App = () => {
   const all = (feedback) => feedback.good + feedback.neutral + feedback.bad
   const average = (feedback) => {
     const _all = all(feedback)
-    if (_all !== 0)
-      return ((feedback.good - feedback.bad) / _all).toFixed(2) + " %"
-    return "0.00 %"
+    if (_all === 0)
+      return "0.00 %"
+    return ((feedback.good - feedback.bad) / _all).toFixed(2) + " %"
   }
   const positive = (feedback) => {
     const _all = all(feedback)
-    if (_all !== 0)
-      return (feedback.good * 100.0 / _all).toFixed(2) + " %"
-    return "0.00 %"
+    if (_all === 0)
+      return "0.00 %"
+    return (feedback.good * 100.0 / _all).toFixed(2) + " %"
   }
   // factory for event handlers
   const setToFeedback = (value) => value
