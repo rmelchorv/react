@@ -8,9 +8,9 @@ const Course = ({ course }) => {
       <Header course={course} />
       <Content parts={course.parts} />
       <h3>total of {
-          course.parts.reduce((total, p) => {
-            return total + p.exercises
-          }, 0)
+          course.parts.reduce((total, part) => {
+            return total + part.exercises
+          }, 0) // <-- valor inicial de la variable acumuladora
         } exercises
       </h3>
     </>
