@@ -4,7 +4,7 @@ import Content from './Content';
 
 const Course = ({ course }) => {
   return (
-    <>
+    <div>
       <Header course={course} />
       <Content parts={course.parts} />
       <h3>total of {
@@ -13,7 +13,7 @@ const Course = ({ course }) => {
           }, 0) // <-- valor inicial de la variable acumuladora
         } exercises
       </h3>
-    </>
+    </div>
   )
 }
 export default Course
