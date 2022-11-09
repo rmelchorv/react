@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-
+/*
 const notes = [
   {
     id: 1,
@@ -22,9 +22,10 @@ const notes = [
     important: true,
   },
 ]
+*/
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App notes={notes} />
+    <App />
   </React.StrictMode>
 );
