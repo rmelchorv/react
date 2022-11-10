@@ -1,31 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-/*
-const notes = [
-  {
-    id: 1,
-    content: 'HTML is easy',
-    date: '2019-05-30T17:30:31.098Z',
-    important: true,
-  },
-  {
-    id: 2,
-    content: 'Browser can execute only JavaScript',
-    date: '2019-05-30T18:39:34.091Z',
-    important: false,
-  },
-  {
-    id: 3,
-    content: 'GET and POST are the most important methods of HTTP protocol',
-    date: '2019-05-30T19:20:14.298Z',
-    important: true,
-  },
-]
-*/
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+
+// npx create-react-app <app-name>.
+// npx json-server --port 3001 --watch db.json (for run and use a [fake] 'json-server').
+
+// npm install axios (for intalling as a runtime dependency).
+// npm install json-server --save-dev (for install a [fake] 'json-server', as a dev dependency):
+//    - for run: npm run server
+
+import axios from 'axios'
+
+axios
+  .get('http://localhost:3001/notes')
+  .then(response => {
+    const notes = response.data
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    
+    root.render(
+      <React.StrictMode>
+        <App notes={notes} />
+      </React.StrictMode>
+    );
+  })
