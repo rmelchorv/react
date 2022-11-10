@@ -1,0 +1,8 @@
+:root {
+  --element-width: 57px;
+}
+
+.Element-width {
+  display: inline-block;
+  width: var(--element-width);
+}

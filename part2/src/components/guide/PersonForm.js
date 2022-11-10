@@ -1,14 +1,17 @@
 import React from 'react';
+import '../../App.css';
 
 const PersonForm = ({ addPerson, newName, newNumber, handlePersonNameChange, handlePersonNumberChange }) => {
   return(
     <>
       <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={handlePersonNameChange} />
+          <span className="Element-width">name:</span>
+          <input value={newName} onChange={handlePersonNameChange} />
         </div>
         <div>
-          number: <input value={newNumber} onChange={handlePersonNumberChange} />
+          <span className="Element-width">number:</span>
+          <input value={newNumber} onChange={handlePersonNumberChange} />
         </div>
         <div>
           <button type="submit">add</button>

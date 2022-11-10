@@ -1,55 +1,70 @@
 import React, { useState, useEffect } from 'react';
+import Filter from './components/guide/Filter';
+import PersonForm from './components/guide/PersonForm';
+import Persons from './components/guide/Persons';
 import axios from 'axios';
-import Note from './components/notes/Note';
 
 const App = () => {
-  const [noteList, setNoteList] = useState([])
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
+  const [ persons, setPersons ] = useState([]) 
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ filter, setFilter ] = useState('')
+  const [ personsToShow, setPersonsToShow] = useState([])
 
   const hook = () => {
     axios
-      .get('http://localhost:3001/notes')
-      .then(response => {
-        setNoteList(response.data)
-    })}
+      .get('http://localhost:3001/persons')
+      .then(res => {
+        setPersons(res.data)
+        setPersonsToShow(res.data)
+      })
+  }
   useEffect(hook, [])
 
-  const notesToShow = showAll ? noteList : noteList.filter(note => note.important) // === true)
-  const addNote = (e) => {
+  const addPerson = (e) => {
     e.preventDefault()
-    
-    const note = {
-      id: noteList.length + 1,
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() < 0.5
+
+    if (persons.findIndex(person => person.name === newName) >= 0) {
+      alert(`${newName} is already added to the phonebook`)
+      return;
     }
-    setNoteList(noteList.concat(note))
-    setNewNote('')
+
+    const person = {
+      name: newName,
+      number: newNumber
+    }
+    if (person.name.toLowerCase().includes(filter.toLowerCase())) {
+      setPersonsToShow(personsToShow.concat(person))
+    }
+    setPersons(persons.concat(person))
+    setNewName('')
+    setNewNumber('')
   }
-  const handleNoteChange = (e) => {
-    setNewNote(e.target.value)
+  const handlePersonNameChange = (e) => {
+    setNewName(e.target.value)
   }
-  return(
+  const handlePersonNumberChange = (e) => {
+    setNewNumber(e.target.value)
+  }
+  const handleFilterChange = (e) => {
+    if (e.target.value.trim().length > 0) {
+      setPersonsToShow(persons.filter(person => 
+        person.name.toLowerCase().includes(e.target.value.toLowerCase())
+      ))
+    } else {
+      setPersonsToShow(persons)
+    }
+    setFilter(e.target.value)
+  }
+  return (
     <div>
-      <h1>Notes</h1>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
-        </button>
-      </div>
-      <ul>
-        {notesToShow.map(
-          note => (
-            <Note key={note.id} note={note} />
-          )
-        )}
-      </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>   
+      <h2>Phonebook</h2>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
+      <h2>add a new</h2>
+      <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber}
+        handlePersonNameChange={handlePersonNameChange} handlePersonNumberChange={handlePersonNumberChange} />
+      <h2>Numbers</h2>
+      <Persons persons={personsToShow} />
     </div>
   )
 }
