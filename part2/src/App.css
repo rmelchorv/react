@@ -6,3 +6,6 @@
   display: inline-block;
   width: var(--element-width);
 }
+.Element-inline {
+  display: inline;
+}
