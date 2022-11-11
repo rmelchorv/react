@@ -1,42 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import Seeker from './components/countries/Seeker';
-import Matching from './components/countries/Matching';
+import Note from './components/notes/Note';
 import axios from 'axios';
 
 const App = () => {
-  const [ countries, setContries ] = useState([]) 
-  const [ filter, setFilter ] = useState('')
-  const [ matching, setMatching ] = useState([])
+  const [notes, setNotes] = useState([])
+  const [newNote, setNewNote] = useState('')
+  const [showAll, setShowAll] = useState(true)
 
   const hook = () => {
     axios
-      .get('https://restcountries.com/v3.1/all')
+      .get('http://localhost:3001/notes')
       .then(response => {
-        setContries(response.data)
-      })
-  }
+        setNotes(response.data)
+    })}
   useEffect(hook, [])
 
-  const handleFilterChange = (e) => {
-    if (e.target.value.trim().length > 0) {
-      setMatching(countries.filter(country => 
-        country.name.common.toLowerCase().includes(e.target.value.toLowerCase())
-      ))
-    } else {
-      setMatching([])
+  const notesToShow = showAll ? notes : notes.filter(note => note.important)
+  const addNote = (e) => {
+    e.preventDefault()
+    
+    const note = {
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5
     }
-    setFilter(e.target.value)
+    axios
+      .post('http://localhost:3001/notes', note)
+      .then(response => {
+        setNotes(notes.concat(response.data))
+        setNewNote('')
+      })
   }
-  const handleCountryClick = (e) => {
-    setMatching(countries.filter(country => 
-      country.name.common.toLowerCase().includes(e.target.value.toLowerCase())
-    ))
-    setFilter('')
+  const handleNoteChange = (e) => {
+    setNewNote(e.target.value)
   }
-  return (
+  return(
     <div>
-      <Seeker filter={filter} handleFilterChange={handleFilterChange} />
-      <Matching countries={matching} handleCountryClick={handleCountryClick} />
+      <h1>Notes</h1>
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all' }
+        </button>
+      </div>
+      <ul>
+        {notesToShow.map(
+          note => (
+            <Note key={note.id} note={note} />
+          )
+        )}
+      </ul>
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleNoteChange} />
+        <button type="submit">save</button>
+      </form>   
     </div>
   )
 }
