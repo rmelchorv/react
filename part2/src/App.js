@@ -27,10 +27,16 @@ const App = () => {
     }
     setFilter(e.target.value)
   }
+  const handleCountryClick = (e) => {
+    setMatching(countries.filter(country => 
+      country.name.common.toLowerCase().includes(e.target.value.toLowerCase())
+    ))
+    setFilter('')
+  }
   return (
     <div>
       <Seeker filter={filter} handleFilterChange={handleFilterChange} />
-      <Matching countries={matching} />
+      <Matching countries={matching} handleCountryClick={handleCountryClick} />
     </div>
   )
 }

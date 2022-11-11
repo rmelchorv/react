@@ -1,14 +1,17 @@
 import React from 'react';
 import Detail from './Detail';
 
-const Matching = ({ countries }) => {
+const Matching = ({ countries, handleCountryClick }) => {
   function showMatchingCountries() {
     if (countries.length > 10)
       return <p>Too many matches, specify another filter</p>
     else if (countries.length > 1)
       return (
         <ul>{countries.sort((a, b) => ((a.name.common < b.name.common) ? -1 : ((a.name.common > b.name.common) ? 1 : 0))).map(country =>
-          <li key={country.name.common}>{country.name.common}</li>
+          <li key={country.name.common}>
+            <button onClick={handleCountryClick} value={country.name.common}>show</button>
+            {` ${country.name.common}`}
+          </li>
         )}</ul>
       )
     else if (countries.length === 1)
