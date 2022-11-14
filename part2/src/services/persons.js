@@ -13,7 +13,7 @@ const readAll = () => {
 const update = () => {
   return null
 }
-const deletePerson = () => {
+const deletePerson = newPerson => {
   return null
 }
 
