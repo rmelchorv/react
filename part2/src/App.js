@@ -1,73 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import Note from './components/notes/Note';
-import noteService from './services/notes';
+import Filter from './components/guide/Filter';
+import PersonForm from './components/guide/PersonForm';
+import Persons from './components/guide/Persons';
+import personService from './services/persons';
 
 const App = () => {
-  const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('')
-  const [showAll, setShowAll] = useState(true)
-  const notesToShow = showAll ? notes : notes.filter(note => note.important)
+  const [ persons, setPersons ] = useState([]) 
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  const [ filter, setFilter ] = useState('')
+  const [ personsToShow, setPersonsToShow] = useState([])
 
   const hook = () => {
-    noteService
+    personService
       .readAll()
-      .then(initialNotes => {
-        setNotes(initialNotes)
-    })}
+      .then(initialPersons => {
+        setPersons(initialPersons)
+        setPersonsToShow(initialPersons)
+      })
+  }
   useEffect(hook, [])
 
-  const toggleImportanceOf = (id) => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
-
-    noteService
-      .update(id, changedNote)
-      .then(returnedNote => {
-        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-      })
-      .catch(error => {
-        alert(`the note '${note.content}' was already deleted from server`)
-        setNotes(notes.filter(n => n.id !== id))
-      })
-  }
-  const addNote = (e) => {
+  const addPerson = (e) => {
     e.preventDefault()
-    
-    const note = {
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() < 0.5
+
+    if (persons.findIndex(person => person.name === newName) >= 0) {
+      alert(`${newName} is already added to the phonebook`)
+      return;
     }
-    noteService
-      .create(note)
-      .then(returnedNote => {
-        setNotes(notes.concat(returnedNote))
-        setNewNote('')
+
+    const person = {
+      name: newName,
+      number: newNumber
+    }
+    personService
+      .create(person)
+      .then(returnedPerson => {
+        if (person.name.toLowerCase().includes(filter.toLowerCase())) {
+          setPersonsToShow(personsToShow.concat(returnedPerson))
+        }
+        setPersons(persons.concat(returnedPerson))
+        setNewName('')
+        setNewNumber('')
       })
   }
-  const handleNoteChange = (e) => {
-    setNewNote(e.target.value)
+  const handlePersonNameChange = (e) => {
+    setNewName(e.target.value)
   }
-  return(
+  const handlePersonNumberChange = (e) => {
+    setNewNumber(e.target.value)
+  }
+  const handleFilterChange = (e) => {
+    if (e.target.value.trim().length > 0) {
+      setPersonsToShow(persons.filter(person => 
+        person.name.toLowerCase().includes(e.target.value.toLowerCase())
+      ))
+    } else {
+      setPersonsToShow(persons)
+    }
+    setFilter(e.target.value)
+  }
+  return (
     <div>
-      <h1>Notes</h1>
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all' }
-        </button>
-      </div>
-      <ul>
-        {notesToShow.map(
-          note => (
-            <Note key={note.id} note={note}
-              toggleImportance={() => toggleImportanceOf(note.id)} />
-          )
-        )}
-      </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>   
+      <h2>Phonebook</h2>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
+      <h2>add a new</h2>
+      <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber}
+        handlePersonNameChange={handlePersonNameChange} handlePersonNumberChange={handlePersonNumberChange} />
+      <h2>Numbers</h2>
+      <Persons persons={personsToShow} />
     </div>
   )
 }
