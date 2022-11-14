@@ -1,9 +1,10 @@
 :root {
-  --element-width: 57px;
+  --element-width: 70px;
 }
 
 .Element-width {
   display: inline-block;
+  text-align: right;
   width: var(--element-width);
 }
 .Element-inline {
