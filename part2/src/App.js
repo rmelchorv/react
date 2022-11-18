@@ -24,11 +24,23 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault()
 
-    if (persons.findIndex(person => person.name === newName) >= 0) {
-      alert(`${newName} is already added to the phonebook`)
+    const index = persons.findIndex(person => person.name === newName);
+
+    if (index >= 0 && window.confirm(
+     `${newName} is already added to phonebook, replace the old number with a new one?`
+    )) {
+      const person = { ...persons[index], number: newNumber }
+      const id = person.id
+
+      personService
+        .update(id, person)
+        .then(returnedPerson => {
+          setPersons(persons.map(person => (person.id !== id) ? person : returnedPerson))
+          setPersonsToShow(personsToShow.map(person => (person.id !== id) ? person : returnedPerson))
+        })
       return;
     }
-
+    
     const person = {
       name: newName,
       number: newNumber
@@ -45,8 +57,8 @@ const App = () => {
       })
   }
   const deletePerson = (e) => {
-    if (window.confirm(`"Delete ${e.target.nextElementSibling.innerHTML}?`)) {
-      let id = parseInt(e.target.value)
+    if (window.confirm(`Delete ${e.target.nextElementSibling.innerHTML}?`)) {
+      const id = parseInt(e.target.value)
 
       personService
         .deletePerson(id)

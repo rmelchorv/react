@@ -10,8 +10,9 @@ const readAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
-const update = () => {
-  return null
+const update = (id, updatedPerson) => {
+  const request = axios.put(`${baseUrl}/${id}`, updatedPerson)
+  return request.then(response => response.data)
 }
 const deletePerson = id => {
   const request = axios.delete(`${baseUrl}/${id}`)
