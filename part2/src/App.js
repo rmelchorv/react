@@ -44,6 +44,18 @@ const App = () => {
         setNewNumber('')
       })
   }
+  const deletePerson = (e) => {
+    if (window.confirm(`"Delete ${e.target.nextElementSibling.innerHTML}?`)) {
+      let id = parseInt(e.target.value)
+
+      personService
+        .deletePerson(id)
+        .then(returnedPerson => {
+          setPersons(persons.filter(person => person.id !== id))
+          setPersonsToShow(personsToShow.filter(person => person.id !== id))
+        })
+    }
+  }
   const handlePersonNameChange = (e) => {
     setNewName(e.target.value)
   }
@@ -68,7 +80,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber}
         handlePersonNameChange={handlePersonNameChange} handlePersonNumberChange={handlePersonNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} deletePerson={deletePerson} />
     </div>
   )
 }

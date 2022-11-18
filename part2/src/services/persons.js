@@ -13,8 +13,9 @@ const readAll = () => {
 const update = () => {
   return null
 }
-const deletePerson = newPerson => {
-  return null
+const deletePerson = id => {
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then(response => response.data)
 }
 
 const personService = { create, deletePerson, readAll, update }
