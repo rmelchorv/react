@@ -1,98 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import Filter from './components/guide/Filter';
-import PersonForm from './components/guide/PersonForm';
-import Persons from './components/guide/Persons';
-import personService from './services/persons';
+import Note from './components/notes/Note';
+import Notification from './components/notes/Notification';
+import noteService from './services/notes';
+import "./App.css";
+import "./index.css";
 
 const App = () => {
-  const [ persons, setPersons ] = useState([]) 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  const [ filter, setFilter ] = useState('')
-  const [ personsToShow, setPersonsToShow] = useState([])
+  const [notes, setNotes] = useState([])
+  const [newNote, setNewNote] = useState('')
+  const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
   const hook = () => {
-    personService
+    noteService
       .readAll()
-      .then(initialPersons => {
-        setPersons(initialPersons)
-        setPersonsToShow(initialPersons)
-      })
-  }
+      .then(initialNotes => {
+        setNotes(initialNotes)
+    })}
   useEffect(hook, [])
 
-  const addPerson = (e) => {
-    e.preventDefault()
+  const toggleImportanceOf = (id) => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !note.important }
 
-    const index = persons.findIndex(person => person.name === newName);
-
-    if (index >= 0 && window.confirm(
-     `${newName} is already added to phonebook, replace the old number with a new one?`
-    )) {
-      const person = { ...persons[index], number: newNumber }
-      const id = person.id
-
-      personService
-        .update(id, person)
-        .then(returnedPerson => {
-          setPersons(persons.map(person => (person.id !== id) ? person : returnedPerson))
-          setPersonsToShow(personsToShow.map(person => (person.id !== id) ? person : returnedPerson))
-        })
-      return;
-    }
-    
-    const person = {
-      name: newName,
-      number: newNumber
-    }
-    personService
-      .create(person)
-      .then(returnedPerson => {
-        if (person.name.toLowerCase().includes(filter.toLowerCase())) {
-          setPersonsToShow(personsToShow.concat(returnedPerson))
-        }
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
+    noteService
+      .update(id, changedNote)
+      .then(returnedNote => {
+        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+      })
+      .catch(error => {
+        setErrorMessage(`Note '${note.content}' was already removed from server`)
+        setTimeout(() => {
+          setErrorMessage(null)}, 2500
+        )
+        setNotes(notes.filter(n => n.id !== id))
       })
   }
-  const deletePerson = (e) => {
-    if (window.confirm(`Delete ${e.target.nextElementSibling.innerHTML}?`)) {
-      const id = parseInt(e.target.value)
-
-      personService
-        .deletePerson(id)
-        .then(returnedPerson => {
-          setPersons(persons.filter(person => person.id !== id))
-          setPersonsToShow(personsToShow.filter(person => person.id !== id))
-        })
+  const addNote = (e) => {
+    e.preventDefault()
+    
+    const note = {
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() < 0.5
     }
+    noteService
+      .create(note)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+        setNewNote('')
+      })
   }
-  const handlePersonNameChange = (e) => {
-    setNewName(e.target.value)
+  const handleNoteChange = (e) => {
+    setNewNote(e.target.value)
   }
-  const handlePersonNumberChange = (e) => {
-    setNewNumber(e.target.value)
-  }
-  const handleFilterChange = (e) => {
-    if (e.target.value.trim().length > 0) {
-      setPersonsToShow(persons.filter(person => 
-        person.name.toLowerCase().includes(e.target.value.toLowerCase())
-      ))
-    } else {
-      setPersonsToShow(persons)
-    }
-    setFilter(e.target.value)
-  }
-  return (
+  return(
     <div>
-      <h2>Phonebook</h2>
-      <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <h2>add a new</h2>
-      <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber}
-        handlePersonNameChange={handlePersonNameChange} handlePersonNumberChange={handlePersonNumberChange} />
-      <h2>Numbers</h2>
-      <Persons persons={personsToShow} deletePerson={deletePerson} />
+      <h1>Notes</h1>
+      <Notification message={errorMessage} />
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all' }
+        </button>
+      </div>
+      <ul>
+        {notesToShow.map(
+          note => (
+            <Note key={note.id} note={note}
+              toggleImportance={() => toggleImportanceOf(note.id)} />
+          )
+        )}
+      </ul>
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleNoteChange} />
+        <button type="submit">save</button>
+      </form>   
     </div>
   )
 }
