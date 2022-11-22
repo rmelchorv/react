@@ -12,8 +12,9 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
-  const [ notification, setNotification] = useState(null)
-  const [ personsToShow, setPersonsToShow] = useState([])
+  const [ notification, setNotification ] = useState(null)
+  const [ notificationStyle, setNotificationStyle ] = useState('success')
+  const [ personsToShow, setPersonsToShow ] = useState([])
 
   const hook = () => {
     personService
@@ -44,7 +45,16 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           //Updated notification
+          setNotificationStyle("success")
           setNotification(`Updated ${returnedPerson.name}`)
+          setTimeout(() => {
+            setNotification(null)}, 2500
+          )
+        })
+        .catch(error => {
+          //Error notification
+          setNotificationStyle("error")
+          setNotification(`Information of ${person.name} has already been removed from server`)
           setTimeout(() => {
             setNotification(null)}, 2500
           )
@@ -66,6 +76,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')
         //Show notification
+        setNotificationStyle("success")
         setNotification(`Added ${returnedPerson.name}`)
         setTimeout(() => {
           setNotification(null)}, 2500
@@ -103,7 +114,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification className="success" message={notification} />
+      <Notification className={notificationStyle} message={notification} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} newNumber={newNumber}
