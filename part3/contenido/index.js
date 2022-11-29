@@ -23,12 +23,15 @@ let notes = [
   },
 ];
 
+//HOME
 app.get("/", (req, res) => {
   res.send("<h1>Hello World!</h1>");
 });
+//GET NOTES
 app.get("/api/notes", (req, res) => {
   res.json(notes);
 });
+//GET ONE NOTE
 app.get("/api/notes/:id", (req, res) => {
   const id = Number(req.params.id); // ó parseInt(req.params.id)
   const note = notes.find((note) => note.id === id);
@@ -39,6 +42,13 @@ app.get("/api/notes/:id", (req, res) => {
     res.status(404).end();
   }
 });
+//DELETE NOTE
+app.delete('/api/notes/:id', (req, res) => {
+  const id = Number(req.params.id)
+  notes = notes.filter(note => note.id !== id)
+
+  res.status(204).end()
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
