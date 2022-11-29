@@ -1,5 +1,5 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 const PORT = 3001;
 
 let notes = [
@@ -23,13 +23,23 @@ let notes = [
   },
 ];
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
-})
-app.get('/api/notes', (req, res) => {
-  res.json(notes)
-})
+app.get("/", (req, res) => {
+  res.send("<h1>Hello World!</h1>");
+});
+app.get("/api/notes", (req, res) => {
+  res.json(notes);
+});
+app.get("/api/notes/:id", (req, res) => {
+  const id = Number(req.params.id); // ó parseInt(req.params.id)
+  const note = notes.find((note) => note.id === id);
+
+  if (note) {
+    res.json(note);
+  } else {
+    res.status(404).end();
+  }
+});
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-})
+  console.log(`Server running on http://localhost:${PORT}`);
+});
