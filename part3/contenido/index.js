@@ -62,7 +62,7 @@ app.post('/api/notes', (req, res) => {
   //console.log(req.headers)
 
   if (!body.content) {
-    return response.status(400).json({ 
+    return res.status(400).json({ 
       error: 'content missing' 
     })
   }
