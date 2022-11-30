@@ -71,6 +71,17 @@ app.delete('/api/persons/:id', (req, res) => {
 //ADD PERSON
 app.post('/api/persons', (req, res) => {
   const body = req.body
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: 'name or number missing'
+    })
+  } else if (persons.some(p => p.name === body.name)) {
+    return res.status(400).json({
+      error: 'name must be unique'
+    })
+  }
+
   const person = {
     name: body.name,
     number: body.number,
