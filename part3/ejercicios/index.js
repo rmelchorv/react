@@ -30,11 +30,11 @@ let persons = [
   }
 ]
 
+//------- ENDPOINTS
 //HOME
 app.get('/', (req, res) => {
   res.send('<h1>Persons DB</h1>')
 })
-
 //INFO
 app.get('/info', (req, res) => {
   res.send(
@@ -42,10 +42,20 @@ app.get('/info', (req, res) => {
     `<p>${new Date()}</p>`
   )
 })
-
 //GET ALL PERSONS
 app.get('/api/persons', (req, res) => {
   res.json(persons)
+})
+//GET PERSON
+app.get('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const person = persons.find(p => p.id === id)
+  
+  if (person) {
+    res.json(person)
+  } else {
+    res.status(404).end()
+  }
 })
 
 app.listen(PORT, () => {
