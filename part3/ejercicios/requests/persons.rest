@@ -1,0 +1,23 @@
+#GET (ALL) PERSONS
+GET http://localhost:3001/api/persons
+
+###
+
+#GET PERSON
+GET http://localhost:3001/api/persons/1
+
+###
+
+#DELETE PERSON
+DELETE http://localhost:3001/api/persons/1
+
+###
+
+#ADD PERSON
+POST http://localhost:3001/api/persons
+Content-Type: application/json; charset=UTF-8
+
+{
+  "name": "PSEUDO-HUMAN PERSON",
+  "number": "52-971-0000001"
+}
