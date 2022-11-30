@@ -1,19 +1,19 @@
-# GET ALL NOTES
+# GET (ALL) NOTES
 GET http://localhost:3001/api/notes
 
 ###
 
-# GET ONE NOTE
+# GET NOTE
 GET http://localhost:3001/api/notes/1
 
 ###
 
-# DELETE ONE NOTE
+# DELETE NOTE
 DELETE http://localhost:3001/api/notes/2
 
 ###
 
-# ADD ONE NOTE
+# ADD NOTE
 POST http://localhost:3001/api/notes
 Content-Type: application/json; charset=UTF-8
 
