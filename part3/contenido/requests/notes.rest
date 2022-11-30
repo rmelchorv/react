@@ -1,0 +1,23 @@
+# GET ALL NOTES
+GET http://localhost:3001/api/notes
+
+###
+
+# GET ONE NOTE
+GET http://localhost:3001/api/notes/1
+
+###
+
+# DELETE ONE NOTE
+DELETE http://localhost:3001/api/notes/2
+
+###
+
+# ADD ONE NOTE
+POST http://localhost:3001/api/notes
+Content-Type: application/json; charset=UTF-8
+
+{
+  "content": "VS Code REST client is pretty good",
+  "important": false
+}

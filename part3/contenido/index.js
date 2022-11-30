@@ -23,6 +23,9 @@ let notes = [
   },
 ];
 
+//JSON parser
+app.use(express.json())
+
 //HOME
 app.get("/", (req, res) => {
   res.send("<h1>Hello World!</h1>");
@@ -45,11 +48,46 @@ app.get("/api/notes/:id", (req, res) => {
 //DELETE NOTE
 app.delete('/api/notes/:id', (req, res) => {
   const id = Number(req.params.id)
+
   notes = notes.filter(note => note.id !== id)
 
   res.status(204).end()
+})
+//ADD NOTE
+app.post('/api/notes', (req, res) => {
+  const body = req.body
+  
+  //console.log(note)
+  //console.log(req.get('Content-Type'))
+  //console.log(req.headers)
+
+  if (!body.content) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  const note = {
+    id: generateId(),
+    content: body.content,
+    date: new Date(),
+    important: body.important || false,
+  }
+
+  notes = notes.concat(note)
+
+  res.json(note)
 })
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+//FUNCTIONS
+const generateId = () => {
+  const maxId = notes.length > 0
+    ? Math.max(...notes.map(n => n.id))
+    : 0
+  return maxId + 1
+}
