@@ -5,6 +5,7 @@
 //  3. npm install morgan
 
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 const PORT = 3001
 
@@ -31,8 +32,10 @@ let persons = [
   }
 ]
 
-//JSON parser
+//MIDDLEWARE: JSON parser
 app.use(express.json())
+//MIDDLEWARE: morgan logger
+app.use(morgan('tiny'))
 
 //------- ENDPOINTS
 //HOME
