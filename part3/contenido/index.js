@@ -23,8 +23,17 @@ let notes = [
   },
 ];
 
-//JSON parser
+//------- MIDDLEWARES: JSON parser and custom logger
+const requestLogger = (req, res, next) => {
+  console.log('Method:', req.method)
+  console.log('Path:  ', req.path)
+  console.log('Body:  ', req.body)
+  console.log('---')
+  next()
+}
 app.use(express.json())
+app.use(requestLogger)
+
 
 //HOME
 app.get("/", (req, res) => {
@@ -78,6 +87,14 @@ app.post('/api/notes', (req, res) => {
 
   res.json(note)
 })
+
+
+//------- MIDDLEWARE: 4unknown routes
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
