@@ -2,6 +2,7 @@
 //  1.1   npm update
 //  1.2   npm install
 //  2. npm install --save-dev nodemon
+//  3. npm install morgan
 
 const express = require('express')
 const app = express()
