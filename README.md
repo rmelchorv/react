@@ -1,4 +1,4 @@
-# full-stack open w/react
+# React
 MERN-Stack (MongoDb, Express.js, React.js, Node.js)
 
 Based on: Deep Dive Into Modern Web Development Full Stack open 2022 Course
